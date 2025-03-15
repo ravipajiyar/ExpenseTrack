@@ -1,21 +1,19 @@
-// username : pajiyargravi20011
-//pwd: FU32Tx4U4aV782zZ
 
-import express, {Express} from "express";
+import dotenv from "dotenv";
 import mongoose from "mongoose";
 
-const app: Express = express();
-const port = process.env.PORT || 3001;
+// Load environment variables *before* using them
+dotenv.config();
 
-app.use(express.json());
+const mongoURI: string | undefined = process.env.MONGO_URI;
 
-const mongoURI: string = "mongodb+srv://pajiyargravi20011:FU32Tx4U4aV782zZ@personalfinancetracker.r9ipz.mongodb.net/";
+if (!mongoURI) {
+  console.error("❌ Error: MONGO_URI is not defined in .env file");
+  process.exit(1); // Exit process if no URI is found
+}
 
 mongoose
-    .connect(mongoURI)
-    .then(()=> console.log("Connected to MongoDB"))
-    .catch((err)=> console.error("Failed to connect to MongoDB:", err))
+  .connect(mongoURI)
+  .then(() => console.log("✅ MongoDB Connected Successfully"))
+  .catch((err) => console.error("❌ Failed to connect to MongoDB:", err));
 
-app.listen(port,()=> {
-    console.log(`server running on Port ${port}`)
-})
