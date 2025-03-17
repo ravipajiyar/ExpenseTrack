@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 const router = express.Router();
 
 // ✅ GET: Fetch All Financial Records
-router.get("/", async (req: Request, res: Response): Promise<void> => {
+router.get("/getAllByUserID/:userId", async (req: Request, res: Response): Promise<void> => {
     try {
         const records = await FinancialRecordModel.find();
         res.status(200).json(records);

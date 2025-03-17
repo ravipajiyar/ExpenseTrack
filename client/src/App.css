@@ -1,42 +1,92 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Updated Modern Color Palette for Dark Theme */
+:root {
+  --primary: #60a5fa; /* Lighter Primary for Dark Background */
+  --primary-dark: #3b82f6;
+  --primary-light: #93c5fd;
+  --secondary: #2dd4cf; /* Lighter Secondary */
+  --accent: #fcd34d; /* Lighter Accent */
+  --light: #e5e7eb;     /* Slightly lighter light for contrast */
+  --dark: #0f172a;      /* Deeper Dark Background */
+  --gray: #6b7280;      /* Medium Gray for contrast on dark */
+  --danger: #f87171;    /* Lighter Danger */
+  --success: #4ade80;   /* Lighter Success */
+  --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1); /* Adjusted shadow for dark mode */
+  --transition-speed: 0.3s;
+
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark light; /* Ensure dark/light color scheme is set */
+  color: var(--light);      /* Default text color to light for dark background */
+  background-color: var(--dark); /* Default background to dark */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* ... (rest of your index.css or App.css, keep other styles like 'a', 'body', 'h1', 'button' for now) ... */
+
+/* For body and app-container, ensure dark background */
+body, html, .app-container {
+  background-color: var(--dark); /* Ensure dark background is applied */
+  color: var(--light);          /* Ensure text color is light */
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Adjust card backgrounds to be slightly lighter than main background for contrast */
+.dashboard-container,
+.form-container,
+.table-container,
+.sign-in-container {
+  background-color: #1e293b; /* Slightly lighter dark for cards/containers */
+  box-shadow: var(--card-shadow); /* Keep shadow, but adjust if needed for dark mode */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Input styles for dark mode - adjust input background and text color */
+.input, select.input {
+  background-color: #374151; /* Darker input background */
+  color: var(--light);        /* Light text color in input */
+  border-color: #4b5563;     /* Darker border color */
 }
 
-.card {
-  padding: 2em;
+.input:focus, select.input:focus {
+  border-color: var(--primary); /* Primary color for focus */
+  box-shadow: 0 0 0 3px var(--primary-light); /* Lighter primary for focus shadow */
+  outline: none;
 }
 
-.read-the-docs {
-  color: #888;
+/* Table styles for dark mode adjustments */
+.table th {
+  background-color: var(--primary-dark); /* Darker primary for table header */
+  color: var(--light);                 /* Light text in table header */
+}
+
+.table tbody tr {
+  background-color: #1e293b; /* Match card background for table rows */
+}
+
+.table tbody tr:nth-child(odd) {
+  background-color: #273042; /* Slightly darker for odd rows if needed for contrast */
+}
+
+.table tbody tr:hover {
+  background-color: #374151; /* Hover color for table rows */
+}
+
+.table td, .table th {
+  border-color: #4b5563; /* Darker border color for table cells */
+}
+
+/* Button styles - keep gradients, but ensure they work well on dark */
+button {
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%); /* Keep primary gradient */
+  color: var(--light); /* Light text on buttons */
+  box-shadow: 0 4px 6px rgba(var(--primary-rgb, 96, 165, 250), 0.4); /* Shadow - adjust if needed */
+}
+
+button:hover {
+  background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary) 100%); /* Hover gradient */
+  box-shadow: 0 6px 10px rgba(var(--primary-rgb, 96, 165, 250), 0.5); /* Hover shadow - adjust if needed */
 }
