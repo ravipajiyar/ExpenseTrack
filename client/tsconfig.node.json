@@ -19,7 +19,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true, 
-    "emitDeclarationOnly": true"
+    "emitDeclarationOnly": true
   },
   "include": ["vite.config.ts"]
 }
