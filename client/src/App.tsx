@@ -1,4 +1,4 @@
-import { SignedIn, UserButton } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton } from "@clerk/clerk-react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { Dashboard } from "./pages/dashboard";
 import { Auth } from "./pages/auth";
@@ -16,9 +16,22 @@ function App() {
           >
             Dashboard
           </Link>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
+          <div className="flex gap-2">
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            <SignedOut>
+  <div className="flex gap-2">
+    <div className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+      <SignUpButton mode="modal" />
+    </div>
+    <div className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+      <SignInButton mode="modal" />
+    </div>
+  </div>
+</SignedOut>
+
+          </div>
         </div>
         <Routes>
           <Route
