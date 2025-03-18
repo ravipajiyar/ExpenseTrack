@@ -28,7 +28,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   return (
     <div
       onClick={() => editable && setIsEditing(true)}
-      style={{ cursor: editable ? "pointer" : "default" }}
+      className={`w-full ${editable ? "cursor-pointer" : "cursor-default"}`}
     >
       {isEditing ? (
         <input
@@ -36,7 +36,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
           onChange={(e) => setValue(e.target.value)}
           autoFocus
           onBlur={onBlur}
-          style={{ width: "100%" }}
+          className="w-full bg-slate-700 px-2 py-1 rounded border border-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none text-white"
         />
       ) : typeof value === "string" ? (
         value
@@ -50,17 +50,15 @@ const EditableCell: React.FC<EditableCellProps> = ({
 export const FinancialRecordList = () => {
   const { records, updateRecord, deleteRecord } = useFinancialRecord();
 
-  // ✅ Wrap updateCellRecord in useCallback to avoid infinite re-renders
   const updateCellRecord = useCallback(
     (rowIndex: number, columnId: string, value: any) => {
       const record = records[rowIndex];
       if (!record || !record._id) return;
       updateRecord(record._id, { ...record, [columnId]: value });
     },
-    [records, updateRecord] // ✅ Only re-create when these dependencies change
+    [records, updateRecord]
   );
 
-  // ✅ Use useMemo with stable dependencies
   const columns: Array<Column<FinancialRecord>> = useMemo(
     () => [
       {
@@ -104,14 +102,14 @@ export const FinancialRecordList = () => {
         Cell: ({ row }: CellProps<FinancialRecord>) => (
           <button
             onClick={() => deleteRecord(row.original._id ?? "")}
-            className="button"
+            className="bg-gradient-to-r from-red-500 to-red-600 text-white font-medium py-1 px-3 rounded-lg transition-all hover:shadow-lg hover:shadow-red-500/30 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center text-sm"
           >
             Delete
           </button>
         ),
       },
     ],
-    [updateCellRecord, deleteRecord] // ✅ Only update columns when needed
+    [updateCellRecord, deleteRecord]
   );
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -121,34 +119,48 @@ export const FinancialRecordList = () => {
     });
 
   return (
-    <div className="table-container">
-      <table {...getTableProps()} className="table">
-        <thead>
-          {headerGroups.map((hg) => (
-            <tr {...hg.getHeaderGroupProps()} key={hg.id}>
-              {hg.headers.map((column) => (
-                <th {...column.getHeaderProps()} key={column.id}>
-                  {column.render("Header")}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()} key={row.id}>
-                {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()} key={cell.column.id}>
-                    {cell.render("Cell")}
-                  </td>
+    <div className="bg-slate-800/95 rounded-2xl p-4 overflow-hidden shadow-xl shadow-slate-900/20 animate-fade-in-up">
+      <div className="overflow-x-auto">
+        <table {...getTableProps()} className="w-full border-collapse">
+          <thead>
+            {headerGroups.map((hg) => (
+              <tr {...hg.getHeaderGroupProps()} key={hg.id} className="border-b-2 border-blue-500">
+                {hg.headers.map((column) => (
+                  <th
+                    {...column.getHeaderProps()}
+                    key={column.id}
+                    className="bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold text-left p-4 text-sm uppercase tracking-wider first:rounded-tl-lg last:rounded-tr-lg"
+                  >
+                    {column.render("Header")}
+                  </th>
                 ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()} className="divide-y divide-slate-700">
+            {rows.map((row) => {
+              prepareRow(row);
+              return (
+                <tr
+                  {...row.getRowProps()}
+                  key={row.id}
+                  className="hover:bg-slate-700/50 transition-all duration-200 hover:translate-x-1"
+                >
+                  {row.cells.map((cell) => (
+                    <td
+                      {...cell.getCellProps()}
+                      key={cell.column.id}
+                      className="p-4 text-gray-200"
+                    >
+                      {cell.render("Cell")}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
