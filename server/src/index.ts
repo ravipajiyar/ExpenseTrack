@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import express, { Express, Request, Response } from "express";
+import express, { Express, Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import financialRecordRouter from "./routes/FinancialRecords";
@@ -23,13 +23,18 @@ app.use(
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error("❌ CORS policy error: Origin not allowed"));
+        console.error(`❌ CORS Error: Origin ${origin} not allowed`);
+        callback(new Error("CORS policy error: Origin not allowed"));
       }
     },
-    methods: "GET,POST,PUT,DELETE",
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type,Authorization",
     credentials: true, // Allow cookies/auth headers
   })
 );
+
+// ✅ Handle Preflight Requests (OPTIONS method)
+app.options("*", cors());
 
 app.use(express.json());
 
@@ -49,12 +54,24 @@ mongoose
     process.exit(1); // Exit on critical failure
   });
 
+// ✅ Middleware to log requests
+app.use((req: Request, res: Response, next: NextFunction) => {
+  console.log(`📌 ${req.method} Request to ${req.url}`);
+  next();
+});
+
 // ✅ Use Financial Records Router
 app.use("/financial-records", financialRecordRouter);
 
 // ✅ Default Route (Health Check)
 app.get("/", (req: Request, res: Response) => {
   res.send("🚀 Backend is running successfully!");
+});
+
+// ✅ Error Handling Middleware
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error("🔥 Server Error:", err.message);
+  res.status(500).json({ error: err.message });
 });
 
 // ✅ Start Server
