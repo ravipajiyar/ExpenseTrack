@@ -35,7 +35,7 @@ export const FinancialRecordProvider = ({
 
   const fetchRecords = async () => {
     if (!user) return;
-    const response = await fetch(`http://localhost:3001/financial-records/getAllByUserID/${user?.id}`);
+    const response = await fetch(`https://expensetrack-backend.onrender.com/financial-records/getAllByUserID/${user?.id}`);
     if (response.ok) {
         const records = await response.json();
         console.log(records)
@@ -48,7 +48,7 @@ export const FinancialRecordProvider = ({
   // Function to add financial record
   const addRecord = async (record: FinancialRecord) => {
     try {
-      const response = await fetch("http://localhost:3001/financial-records", {
+      const response = await fetch("https://expensetrack-backend.onrender.com/financial-records", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -68,7 +68,7 @@ export const FinancialRecordProvider = ({
   };
   const updateRecord = async (id: string, newRecord: FinancialRecord) => {
     const response = await fetch(
-      `http://localhost:3001/financial-records/${id}`,
+      `https://expensetrack-backend.onrender.com/financial-records/${id}`,
       {
         method: "PUT",
         body: JSON.stringify(newRecord),
@@ -95,7 +95,7 @@ export const FinancialRecordProvider = ({
   };
   const deleteRecord = async (id: string) => {
     const response = await fetch(
-      `http://localhost:3001/financial-records/${id}`,
+      `https://expensetrack-backend.onrender.com/financial-records/${id}`,
       {
         method: "DELETE",
       }
